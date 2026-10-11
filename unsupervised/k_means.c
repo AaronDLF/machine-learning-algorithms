@@ -144,8 +144,13 @@ cluster *kmeans(point points[], size_t size, int k) {
     for (size_t j = 0; j < size; j++) {
       /*la siguiente linea no tiene alta legibilidad pero se hizo para poder
        * entender que es la forma final luego de que el compilador haga la
-       * traduccion del azucar sintactico*/
-      (*(clusters + j)).x = (*(points + j)).x;
+       * traduccion del azucar sintactico
+        forma final del compilador : (*(clusters + j)).x = (*(points + j)).x;*/
+
+      clusters[j].x = points[j].x;
+      clusters[j].y = points[j].y;
+      clusters[j].count = 1;
+      points[j].group = j;
     }
   }
   return clusters;
