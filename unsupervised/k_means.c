@@ -126,7 +126,7 @@ cluster *kmeans(point points[], size_t size, int k) {
          los puntos y verificar si el cercano calculado es diferente al grupo
          evaluado para la iteracion,actualizar la variable de cambios "changed"
          y reasignar el grupo del punto/observacion evaluado al valor cercano
-         calculado*/
+         calculado */
 
       for (size_t j = 0; j < size; j++) {
 
@@ -137,7 +137,16 @@ cluster *kmeans(point points[], size_t size, int k) {
         }
       }
 
-    } while (true);
+    } while (changed > accepted_error);
+    // evaluar la condicion cuando se presente entonces el caso de que el
+    // cluster solo comprenda a cada elemento individualmente
+  } else {
+    for (size_t j = 0; j < size; j++) {
+      /*la siguiente linea no tiene alta legibilidad pero se hizo para poder
+       * entender que es la forma final luego de que el compilador haga la
+       * traduccion del azucar sintactico*/
+      (*(clusters + j)).x = (*(points + j)).x;
+    }
   }
   return clusters;
 }
