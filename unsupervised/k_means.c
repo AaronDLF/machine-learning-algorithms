@@ -126,7 +126,7 @@ cluster *kmeans(point points[], size_t size, int k) {
          los puntos y verificar si el cercano calculado es diferente al grupo
          evaluado para la iteracion,actualizar la variable de cambios "changed"
          y reasignar el grupo del punto/observacion evaluado al valor cercano
-         calculado */
+         calculado*/
 
       for (size_t j = 0; j < size; j++) {
 
@@ -154,6 +154,74 @@ cluster *kmeans(point points[], size_t size, int k) {
     }
   }
   return clusters;
+}
+
+/*la funcion de printEPS() no fue desarrollada por mi persona, es prestamo
+ * de un codigo de referencia, a pesar de esto,  pude aprender logicas
+ * interesantes asociadas a la alocacion de memoria para el RGB, asignando los 3
+ * canales como un arreglo que contempla 3 espacios(R, G, B) para cada canal de
+ * color a cada cluster
+ * */
+
+void printEPS(point pts[], size_t len, cluster cent[], int k) {
+  int W = 400, H = 400;
+  double min_x = DBL_MAX, max_x = DBL_MIN, min_y = DBL_MAX, max_y = DBL_MIN;
+  double scale = 0, cx = 0, cy = 0;
+  double *colors = (double *)malloc(sizeof(double) * (k * 3));
+  int i;
+  size_t j;
+  double kd = k * 1.0;
+  for (i = 0; i < k; i++) {
+    *(colors + 3 * i) = (3 * (i + 1) % k) / kd;
+    *(colors + 3 * i + 1) = (7 * i % k) / kd;
+    *(colors + 3 * i + 2) = (9 * i % k) / kd;
+  }
+
+  for (j = 0; j < len; j++) {
+    if (max_x < pts[j].x) {
+      max_x = pts[j].x;
+    }
+    if (min_x > pts[j].x) {
+      min_x = pts[j].x;
+    }
+    if (max_y < pts[j].y) {
+      max_y = pts[j].y;
+    }
+    if (min_y > pts[j].y) {
+      min_y = pts[j].y;
+    }
+  }
+  scale = W / (max_x - min_x);
+  if (scale > (H / (max_y - min_y))) {
+    scale = H / (max_y - min_y);
+  };
+  cx = (max_x + min_x) / 2;
+  cy = (max_y + min_y) / 2;
+
+  printf("%%!PS-Adobe-3.0 EPSF-3.0\n%%%%BoundingBox: -5 -5 %d %d\n", W + 10,
+         H + 10);
+  printf("/l {rlineto} def /m {rmoveto} def\n"
+         "/c { .25 sub exch .25 sub exch .5 0 360 arc fill } def\n"
+         "/s { moveto -2 0 m 2 2 l 2 -2 l -2 -2 l closepath "
+         "	gsave 1 setgray fill grestore gsave 3 setlinewidth"
+         " 1 setgray stroke grestore 0 setgray stroke }def\n");
+  for (int i = 0; i < k; i++) {
+    printf("%g %g %g setrgbcolor\n", *(colors + 3 * i), *(colors + 3 * i + 1),
+           *(colors + 3 * i + 2));
+    for (j = 0; j < len; j++) {
+      if (pts[j].group != i) {
+        continue;
+      }
+      printf("%.3f %.3f c\n", (pts[j].x - cx) * scale + W / 2,
+             (pts[j].y - cy) * scale + H / 2);
+    }
+    printf("\n0 setgray %g %g s\n", (cent[i].x - cx) * scale + W / 2,
+           (cent[i].y - cy) * scale + H / 2);
+  }
+  printf("\n%%%%EOF");
+
+  // free accquired memory
+  free(colors);
 }
 
 int main(int argc, char *argv[]) {
