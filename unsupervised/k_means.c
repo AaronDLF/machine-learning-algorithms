@@ -224,6 +224,39 @@ void printEPS(point pts[], size_t len, cluster cent[], int k) {
   free(colors);
 }
 
+static void test() {
+  // se hace la alocacion en memoria de las observaciones (puntos)
+  size_t size = 100000L;
+  point *points = malloc(sizeof(point) * size);
+
+  // definicion de un maximo radio a 20 y de las variables de radio y angulo
+  double maxRadius = 20;
+  double radius = 0;
+  double angle = 0;
+  // iterar para definir los angulos y los radios de cada uno de los puntos
+
+  size_t i = 0;
+  for (; i < size; i++) {
+    // acotado al rango disponible conversion de las coordenadas polares a
+    // coordendas geometricas
+    radius = maxRadius * ((double)rand() / RAND_MAX);
+    angle = 2 * M_PI * ((double)rand() / RAND_MAX);
+
+    (points + i)->x = radius * cos(angle);
+    (points + i)->y = radius * sin(angle);
+  }
+
+  // aplicar la funcion de k means sobre el conjunto de puntos
+  int k = 5;
+  cluster *clusters = kmeans(points, size, k);
+  // aplicar la funcion de impresion del formato de EPS
+  printEPS(points, size, clusters, k);
+
+  // liberacion de la memoria
+  free(points);
+  free(clusters);
+}
+
 int main(int argc, char *argv[]) {
   printf("hola a todos ustedes");
   return EXIT_SUCCESS;
