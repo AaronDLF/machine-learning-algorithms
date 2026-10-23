@@ -1,4 +1,4 @@
-// Liberias basicas a utilizar
+// Librerias basicas a utilizar
 
 #include <float.h>
 #include <math.h>
