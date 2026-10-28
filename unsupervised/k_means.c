@@ -274,6 +274,13 @@ static void test2() {
     points[i].x = radius * cos(angle);
     points[i].y = radius * sin(angle);
   }
+
+  int k = 15;
+  cluster *clusters = kmeans(points, size, k);
+  printEPS(points, size, clusters, k);
+  // liberando la memoria, casi lo olvido ...
+  free(points);
+  free(clusters);
 }
 
 int main(int argc, char *argv[]) {
