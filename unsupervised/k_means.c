@@ -92,7 +92,7 @@ cluster *kmeans(point points[], size_t size, int k) {
     memset(clusters, 0, sizeof(cluster) * k);
 
     // asignacion del grupo a una observacion o punto j
-    for (size_t j; j < size; j++) {
+    for (size_t j = 0; j < size; j++) {
       points[j].group = rand() % k;
     }
     // definicion de variables de cambio y error minimo a aceptar
@@ -100,6 +100,8 @@ cluster *kmeans(point points[], size_t size, int k) {
     size_t accepted_error = size / 10000;
     int group = 0;
     do {
+      // reinicio de changed a cero, debe contar cambios para cada pasada
+      changed = 0;
       // inicio de los clusters a cero
       for (int i = 0; i < k; i++) {
         clusters[i].x = 0;
@@ -141,6 +143,7 @@ cluster *kmeans(point points[], size_t size, int k) {
     // evaluar la condicion cuando se presente entonces el caso de que el
     // cluster solo comprenda a cada elemento individualmente
   } else {
+    clusters = malloc(sizeof(cluster) * size);
     for (size_t j = 0; j < size; j++) {
       /*la siguiente linea no tiene alta legibilidad pero se hizo para poder
        * entender que es la forma final luego de que el compilador haga la

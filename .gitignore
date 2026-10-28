@@ -1,3 +1,9 @@
 C-master/
 *.zip
 *.ipynb
+
+# tool config
+.atl/
+
+# compiled binaries
+unsupervised/k_means
