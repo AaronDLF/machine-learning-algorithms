@@ -257,6 +257,25 @@ static void test() {
   free(clusters);
 }
 
+static void test2() {
+  size_t size = 100000L;
+  point *points = malloc(sizeof(point) * size);
+
+  double maxRadius = 20;
+  double radius = 0;
+  double angle = 0;
+
+  size_t i = 0;
+
+  for (; i < size; i++) {
+    radius = maxRadius * ((double)rand() / RAND_MAX);
+    angle = 2 * M_PI * ((double)rand() / RAND_MAX);
+
+    points[i].x = radius * cos(angle);
+    points[i].y = radius * sin(angle);
+  }
+}
+
 int main(int argc, char *argv[]) {
   printf("hola a todos ustedes");
   return EXIT_SUCCESS;
