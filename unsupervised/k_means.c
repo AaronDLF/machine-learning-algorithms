@@ -284,6 +284,8 @@ static void test2() {
 }
 
 int main(int argc, char *argv[]) {
-  printf("hola a todos ustedes");
-  return EXIT_SUCCESS;
+  srand(time(NULL));
+  test();
+
+  return 0;
 }
