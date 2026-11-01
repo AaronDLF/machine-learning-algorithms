@@ -1,9 +1,46 @@
+# compiled binaries without extension (e.g. unsupervised/k_means)
+# ignore every file without a dot, keep directories and known text files
+# NOTE: keep this block first, later rules override these negations
+*
+!*/
+!*.*
+!Makefile
+!LICENSE
+!README
+
+# reference material (not part of this repo)
 C-master/
 *.zip
 *.ipynb
 
 # tool config
 .atl/
+.codegraph/
+.claude/
 
-# compiled binaries
-unsupervised/k_means
+# compiled objects and build output
+*.o
+*.obj
+*.a
+*.so
+*.out
+*.exe
+*.d
+*.dSYM/
+build/
+bin/
+
+# debugging and profiling
+vgcore.*
+*.gcda
+*.gcno
+
+# editors and OS
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+
+# generated plots (GitHub does not render EPS)
+*.eps
