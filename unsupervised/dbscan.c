@@ -28,7 +28,22 @@ typedef struct point {
 typedef struct index_list {
   size_t *data; // puntero a un bloque de memoria dinamica
   size_t size;  // el tamaño definido dados los puntos que se encuentren en la
-               // index_list
+                // index_list
   size_t capacity; // capacidad maxima de la index_list, no debe ser superada
                    // por size
 } index_list;
+
+// funcion para la liberacion de memoria e inicializacion en ceros
+
+static void list_free(index_list *list) {
+  free(list->data);
+  list->data =
+      NULL; // aqui no es cero porque toca recordar que es un puntero a
+            // size_t, no es el valor directamente, colocar cero produce el
+            // mismo resultado pero no declara las intenciones directas
+  list->size =
+      0; // aqui si hablo de valor directamente, por tanto puedo colocar el
+         // valor en ceros, accedo por -> ya que es un puntero al struct de
+         // index_list y luego se accede al atributo concreto size
+  list->capacity = 0;
+}
