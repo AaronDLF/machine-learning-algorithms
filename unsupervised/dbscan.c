@@ -47,3 +47,25 @@ static void list_free(index_list *list) {
          // index_list y luego se accede al atributo concreto size
   list->capacity = 0;
 }
+
+static bool push(index_list *list, size_t index) {
+  if (list->size == list->capacity) { // caso para evaluar que el tamaño de lo
+                                      // almacenado en la lista coincida con la
+                                      // capcidad designada para la misma
+    const size_t limit = SIZE_MAX / sizeof(*list->data);
+    size_t next; // siguiente tamaño a asignar de limite
+
+    // se evaluan las capacidades futuras (next) a partir de las capacidades
+    // actuales
+    if (list->capacity == 0) {
+      next = 32;
+    } else {
+      if (list->capacity > limit / 2) {
+        next = limit;
+
+      } else {
+        next = list->capacity * 2;
+      }
+    }
+  }
+}
