@@ -67,5 +67,44 @@ static bool push(index_list *list, size_t index) {
         next = list->capacity * 2;
       }
     }
+
+    if (next <= list->capacity || next > limit) {
+      return false;
+    }
+
+    /*TODO : 1. realocacion de memoria y validacion de que la nueva data no sea
+     * NULL
+     * 2.asignacion de la nueva data y de la siguiente capacidad a evaluar
+     **/
+
+    size_t *new_data = realloc(list->data, next * sizeof(*list->data));
+
+    if (new_data == NULL) {
+      return false;
+    }
+
+    list->data = new_data;
+    list->capacity = next;
   }
+
+  /* NOTE :
+   *
+   * El bloque de memoria dinámico se reserva mediante realloc(),
+   * que también puede realizar una reserva inicial cuando data == NULL.
+   *
+   * El campo data del struct index_list es un único puntero a size_t,
+   * que apunta al primer elemento de un arreglo dinámico.
+   *
+   * La memoria reservada permite almacenar 'capacity' elementos de
+   * tipo size_t, no 'capacity' punteros a size_t. */
+
+  /* asignacion del elemento pasado a la funcion para hacer push en la siguiente
+  posicion libre del arreglo de tamaño dinamico */
+  list->data[list->size] = index;
+
+  // actualizacion de la cantidad de elementos del arreglo
+  list->size++;
+
+  // retorno positivo de la ejecucion del push en la funcion
+  return true;
 }
