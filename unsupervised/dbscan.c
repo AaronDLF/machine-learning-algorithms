@@ -108,3 +108,34 @@ static bool push(index_list *list, size_t index) {
   // retorno positivo de la ejecucion del push en la funcion
   return true;
 }
+
+/* NOTE : creacion de la funcion con retorno booleano para definir la consulta
+ de la region para los puntos */
+
+static bool region_query(point *points, size_t n, size_t center,
+                         double eps_squared, index_list *neighbors) {
+  neighbors->size = 0;
+
+  size_t j = 0;
+
+  for (; j < n; j++) {
+
+    // diferencia entre las coordenadas x del punto actual y el central
+    double dx = points[j].x - points[center].x;
+
+    // diferencia entre las coordenadas y del punto actual y el central
+    double dy = points[j].y - points[center].y;
+
+    /* validacion para mirar si la distancia de ese punto al centro es menor que
+    la epsilon (cuadrada) establecida */
+    if ((dx * dx) + (dy * dy) <= eps_squared) {
+
+      /* se aplica la funcion push() pero se valida inmediatamente que no halla
+      fallado, en caso de que ocurra se hace un return false como se indica*/
+      if (!push(neighbors, j)) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
